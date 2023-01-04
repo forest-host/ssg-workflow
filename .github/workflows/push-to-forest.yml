@@ -1,14 +1,13 @@
 name: Push-to-Forest
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+  # Allows you to run this workflow via external webhook trigger
+  repository_dispatch:
+    types:
+      - webhook
 
 jobs:
   # The `push` job adds a new commit to the repo's branch that is connected to Forest 
@@ -16,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           ref: production
@@ -28,5 +26,5 @@ jobs:
 
       - name: commit
         run: |
-          git commit --allow-empty -m "Update content. Triggering deploy on Forest.host :rocket:" 
+          git commit --allow-empty -m ":seedling: Triggering deploy on Forest.host :rocket:" 
           git push origin production
